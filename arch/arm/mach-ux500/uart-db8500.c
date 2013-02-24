@@ -16,7 +16,7 @@
 #include <mach/hardware.h>
 #include <mach/context.h>
 
-#ifdef CONFIG_UX500_CONTEXT
+#ifdef CONFIG_DBX500_CONTEXT
 
 static struct {
 	struct clk *uart_clk;

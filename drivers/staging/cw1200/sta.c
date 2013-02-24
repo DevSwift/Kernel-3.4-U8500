@@ -977,9 +977,6 @@ report:
 		sta_printk(KERN_DEBUG "[CQM] Beacon loss.\n");
 		if (timeout <= 0)
 			timeout = 0;
-#if defined(CONFIG_CW1200_USE_STE_EXTENSIONS)
-		ieee80211_cqm_beacon_miss_notify(priv->vif, GFP_KERNEL);
-#endif /* CONFIG_CW1200_USE_STE_EXTENSIONS */
 	} else {
 		timeout = 0;
 	}
@@ -1009,8 +1006,6 @@ void cw1200_tx_failure_work(struct work_struct *work)
 		container_of(work, struct cw1200_common, tx_failure_work);
 	sta_printk(KERN_DEBUG "[CQM] Reporting TX failure.\n");
 #if defined(CONFIG_CW1200_USE_STE_EXTENSIONS)
-	ieee80211_cqm_tx_fail_notify(priv->vif, GFP_KERNEL);
-#else /* CONFIG_CW1200_USE_STE_EXTENSIONS */
 	(void)priv;
 #endif /* CONFIG_CW1200_USE_STE_EXTENSIONS */
 }

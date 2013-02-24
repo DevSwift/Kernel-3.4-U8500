@@ -234,13 +234,6 @@ static int determine_sleep_state(u32 *sleep_time)
 			return cstates_1CPU[smp_processor_id()][per_cpu(cpu_state, smp_processor_id())->gov_cstate];
 	}
 
-	power_state_req = power_state_active_is_enabled() ||
-		prcmu_is_ac_wake_requested();
-
-	(*sleep_time) = get_remaining_sleep_time(NULL, NULL);
-
-	if ((*sleep_time) == UINT_MAX)
-		return CI_WFI;
 	/*
 	 * Never go deeper than the governor recommends even though it might be
 	 * possible from a scheduled wake up point of view
@@ -249,10 +242,6 @@ static int determine_sleep_state(u32 *sleep_time)
 		if (max_depth > per_cpu(cpu_state, cpu)->gov_cstate)
 			max_depth = per_cpu(cpu_state, cpu)->gov_cstate;
 	}
-
-	uart = ux500_ci_dbg_force_ape_on();
-	ape = power_state_active_is_enabled();
-	modem = prcmu_is_ac_wake_requested();
 
 	for (i = max_depth; i > 0; i--) {
 

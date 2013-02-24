@@ -166,6 +166,13 @@ config TEE_UX500
 	help
 	  Adds TEE hardware support for ux500 platforms.
 
+config MACH_U8500_KUMQUAT
+	bool "Sony Ericsson Kumquat"
+	select WLAN_PMUEN_UX500
+	select CW1200_USE_GPIO_IRQ
+	help
+	  Support for Sony Ericsson Kumquat devices.
+
 config TEE_SVP
 	bool "Trusted Execution Environment (TEE) ux500 SVP support"
 	depends on TEE_SUPPORT && UX500_SVP

@@ -118,7 +118,6 @@ void ux500_suspend_dbg_test_set_wakeup(void)
 	if (suspend_test_count == 0)
 		return;
 
-	ux500_rtcrtt_off();
 
 	/* Make sure the rtc writes have been accepted */
 	udelay(120);
@@ -129,8 +128,6 @@ void ux500_suspend_dbg_test_set_wakeup(void)
 	else
 		prcmu_enable_wakeups(PRCMU_WAKEUP(ABB) | PRCMU_WAKEUP(RTC));
 
-	/* Program RTC to generate an interrupt 1s later */
-	ux500_rtcrtt_next(1000000);
 }
 
 void ux500_suspend_dbg_test_start(int num)

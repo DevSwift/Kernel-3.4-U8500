@@ -249,10 +249,6 @@ enum ieee80211_rssi_event {
  * @cqm_rssi_thold: Connection quality monitor RSSI threshold, a zero value
  *	implies disabled
  * @cqm_rssi_hyst: Connection quality monitor RSSI hysteresis
- * @cqm_beacon_miss_thold: Connection quality monitor beacon threshold, a zero
- *     value implies disabled
- * @cqm_tx_fail_thold: Connection quality monitor tx threshold, a zero value
- *     implies disabled
  * @arp_addr_list: List of IPv4 addresses for hardware ARP filtering. The
  *	may filter ARP queries targeted for other addresses than listed here.
  *	The driver must allow ARP queries targeted for all address listed here
@@ -289,8 +285,6 @@ struct ieee80211_bss_conf {
 	u16 ht_operation_mode;
 	s32 cqm_rssi_thold;
 	u32 cqm_rssi_hyst;
-        u32 cqm_beacon_miss_thold;
-        u32 cqm_tx_fail_thold;
 	enum nl80211_channel_type channel_type;
 	__be32 arp_addr_list[IEEE80211_BSS_ARP_ADDR_LIST_LEN];
 	u8 arp_addr_cnt;
@@ -872,12 +866,6 @@ struct ieee80211_channel_switch {
  *	monitoring on this virtual interface -- i.e. it can monitor
  *	connection quality related parameters, such as the RSSI level and
  *	provide notifications if configured trigger levels are reached.
- *
- * @IEEE80211_HW_SUPPORTS_CQM_BEACON_MISS
- *     Connection quality monitoring - beacon miss.
- *
- * @IEEE80211_HW_SUPPORTS_CQM_TX_FAIL
- *     Connection quality monitoring - tx failure.
  */
 enum ieee80211_vif_flags {
 	IEEE80211_VIF_BEACON_FILTER		= BIT(0),
@@ -1213,8 +1201,6 @@ enum ieee80211_hw_flags {
 	IEEE80211_HW_AP_LINK_PS				= 1<<22,
 	IEEE80211_HW_TX_AMPDU_SETUP_IN_HW		= 1<<23,
 	IEEE80211_HW_SCAN_WHILE_IDLE			= 1<<24,
-        IEEE80211_HW_SUPPORTS_CQM_BEACON_MISS           = 1<<25,
-        IEEE80211_HW_SUPPORTS_CQM_TX_FAIL               = 1<<26,
 };
 
 /**
@@ -3432,35 +3418,6 @@ void ieee80211_enable_dyn_ps(struct ieee80211_vif *vif);
 void ieee80211_cqm_rssi_notify(struct ieee80211_vif *vif,
 			       enum nl80211_cqm_rssi_threshold_event rssi_event,
 			       gfp_t gfp);
-
-/**
- * ieee80211_cqm_beacon_miss_notify - inform a configured connection quality
- *     monitoring beacon miss threshold triggered
- *
- * @vif: &struct ieee80211_vif pointer from the add_interface callback.
- * @gfp: context flag
- *
- * When the %IEEE80211_HW_SUPPORTS_CQM_BEACON_MISS is set, and a connection
- * quality monitoring is configured with an beacon miss threshold, the driver
- * will inform whenever the desired amount of consecutive beacons is missed.
- */
-void ieee80211_cqm_beacon_miss_notify(struct ieee80211_vif *vif,
-                                     gfp_t gfp);
-
-
-/**
- * ieee80211_cqm_tx_fail_notify - inform a configured connection quality
- *     monitoring beacon miss threshold triggered
- *
- * @vif: &struct ieee80211_vif pointer from the add_interface callback.
- * @gfp: context flag
- *
- * When the %IEEE80211_HW_SUPPORTS_CQM_TX_FAIL is set, and a connection
- * quality monitoring is configured with an tx failure threshold, the driver
- * whenever the desired amount of consecutive TX attempts is failed.
- */
-void ieee80211_cqm_tx_fail_notify(struct ieee80211_vif *vif,
-                                 gfp_t gfp);
 
 /**
  * ieee80211_get_operstate - get the operstate of the vif

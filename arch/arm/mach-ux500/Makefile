@@ -14,6 +14,7 @@ ifeq ($(CONFIG_UX500_SOC_DB5500), y)
 obj-$(CONFIG_UX500_SOC_DBX500)	+= cpu-db5500.o dma-db5500.o \
 				   devices-db5500.o clock-db5500.o
 board-mcde-objs			+= board-u5500-mcde.o
+board-mcde-objs			+= board-rio-grande-mcde.o
 endif
 ifeq ($(CONFIG_UX500_SOC_DB8500), y)
 obj-$(CONFIG_UX500_SOC_DBX500)	+= cpu-db8500.o devices-db8500.o \
@@ -27,6 +28,18 @@ obj-$(CONFIG_MACH_MOP500)	+= board-mop500.o board-mop500-sdi.o \
 				board-mop500-bm.o \
 				board-pins-sleep-force.o
 obj-$(CONFIG_ANDROID_STE_TIMED_VIBRA)	+= board-mop500-vibra.o
+
+obj-$(CONFIG_MACH_U8500_KUMQUAT)  += board-rio-grande.o board-rio-grande-sdi.o \
+				board-mop500-regulators.o \
+				gpio-kumquat.o \
+				board-mop500-msp.o board-mop500-bm.o \
+				board-rio-grande-mmio.o board-mop500-wlan.o \
+				simple_remote-rio-grande.o \
+				input-kumquat.o leds-kumquat.o \
+				display-rio-grande.o sim_detect_semc.o \
+				charger-kumquat.o \
+				board-mop500-vibra.o
+
 obj-$(CONFIG_MACH_U5500)	+= board-u5500.o board-u5500-sdi.o \
 				   board-u5500-regulators.o \
 				   board-u5500-pins.o

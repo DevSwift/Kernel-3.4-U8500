@@ -259,10 +259,6 @@ struct ieee80211_hw *cw1200_init_common(size_t priv_data_len)
 		    /* Aggregation is fully controlled by firmware.
 		     * Do not need any support from the mac80211 stack */
 		    /* IEEE80211_HW_AMPDU_AGGREGATION | */
-#if defined(CONFIG_CW1200_USE_STE_EXTENSIONS)
-		    IEEE80211_HW_SUPPORTS_CQM_BEACON_MISS |
-		    IEEE80211_HW_SUPPORTS_CQM_TX_FAIL |
-#endif /* CONFIG_CW1200_USE_STE_EXTENSIONS */
 		    IEEE80211_HW_NEED_DTIM_PERIOD;
 
 	hw->wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |

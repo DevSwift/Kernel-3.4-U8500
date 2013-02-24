@@ -455,15 +455,7 @@ void cw1200_bss_info_changed(struct ieee80211_hw *dev,
 			priv->association_mode.mpduStartSpacing =
 				cw1200_ht_ampdu_density(&priv->ht_info);
 
-#if defined(CONFIG_CW1200_USE_STE_EXTENSIONS)
-			priv->cqm_beacon_loss_count =
-					info->cqm_beacon_miss_thold;
-			priv->cqm_tx_failure_thold =
-					info->cqm_tx_fail_thold;
-			priv->cqm_tx_failure_count = 0;
-			cancel_delayed_work_sync(&priv->bss_loss_work);
-			cancel_delayed_work_sync(&priv->connection_loss_work);
-#endif /* CONFIG_CW1200_USE_STE_EXTENSIONS */
+
 
 			priv->bss_params.beaconLostCount =
 					priv->cqm_beacon_loss_count ?
@@ -572,14 +564,6 @@ void cw1200_bss_info_changed(struct ieee80211_hw *dev,
 		ap_printk(KERN_DEBUG "[CQM] RSSI threshold "
 			"subscribe: %d +- %d\n",
 			info->cqm_rssi_thold, info->cqm_rssi_hyst);
-#if defined(CONFIG_CW1200_USE_STE_EXTENSIONS)
-		ap_printk(KERN_DEBUG "[CQM] Beacon loss subscribe: %d\n",
-			info->cqm_beacon_miss_thold);
-		ap_printk(KERN_DEBUG "[CQM] TX failure subscribe: %d\n",
-			info->cqm_tx_fail_thold);
-		priv->cqm_rssi_thold = info->cqm_rssi_thold;
-		priv->cqm_rssi_hyst = info->cqm_rssi_hyst;
-#endif /* CONFIG_CW1200_USE_STE_EXTENSIONS */
 		if (info->cqm_rssi_thold || info->cqm_rssi_hyst) {
 			/* RSSI subscription enabled */
 			/* TODO: It's not a correct way of setting threshold.
@@ -602,27 +586,7 @@ void cw1200_bss_info_changed(struct ieee80211_hw *dev,
 		}
 		WARN_ON(wsm_set_rcpi_rssi_threshold(priv, &threshold));
 
-#if defined(CONFIG_CW1200_USE_STE_EXTENSIONS)
-		priv->cqm_tx_failure_thold = info->cqm_tx_fail_thold;
-		priv->cqm_tx_failure_count = 0;
 
-		if (priv->cqm_beacon_loss_count !=
-				info->cqm_beacon_miss_thold) {
-			priv->cqm_beacon_loss_count =
-				info->cqm_beacon_miss_thold;
-			priv->bss_params.beaconLostCount =
-				priv->cqm_beacon_loss_count ?
-				priv->cqm_beacon_loss_count :
-				priv->cqm_link_loss_count;
-			/* Make sure we are associated before sending
-			 * set_bss_params to firmware */
-			if (priv->bss_params.aid) {
-				WARN_ON(wsm_set_bss_params(priv,
-					&priv->bss_params));
-				priv->setbssparams_done = true;
-			}
-		}
-#endif /* CONFIG_CW1200_USE_STE_EXTENSIONS */
 	}
 	mutex_unlock(&priv->conf_mutex);
 }

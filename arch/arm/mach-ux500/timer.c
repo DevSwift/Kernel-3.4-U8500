@@ -19,7 +19,7 @@
 #include <mach/irqs.h>
 #include <mach/context.h>
 
-#ifdef CONFIG_UX500_CONTEXT
+#ifdef CONFIG_DBX500_CONTEXT
 static int mtu_context_notifier_call(struct notifier_block *this,
 				     unsigned long event, void *data)
 {
@@ -101,7 +101,7 @@ static void __init ux500_timer_init(void)
 	clksrc_dbx500_prcmu_init(prcmu_timer_base);
 	ux500_twd_init();
 
-#ifdef CONFIG_UX500_CONTEXT
+#ifdef CONFIG_DBX500_CONTEXT
 	WARN_ON(context_ape_notifier_register(&mtu_context_notifier));
 #endif
 }
